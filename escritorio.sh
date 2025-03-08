@@ -31,13 +31,13 @@ esac
 plasma(){
     write_header "Configuracion de ArchLinux UEFI btrfs https://wiki.archlinux.org/title/Btrfs"
     print_info "Instalando escritorio KDE-Plasma https://wiki.archlinux.org/title/KDE#Plasma"
-    sudo pacman --noconfirm -S plasma-pa plasma-nm plasma-systemmonitor kscreen khotkeys powerdevil kdeplasma-addons kde-gtk-config breeze-gtk alacritty dolphin kate mpv ark iwd konsole plasma-meta plasma-workspace smartmontools vim wget wiriless_tools plymouth gwenview
+    sudo pacman --noconfirm --needed -S plasma-pa plasma-nm plasma-systemmonitor kscreen khotkeys powerdevil kdeplasma-addons kde-gtk-config breeze-gtk alacritty dolphin kate mpv ark iwd konsole plasma-meta plasma-workspace smartmontools vim wget wiriless_tools plymouth gwenview
 }
 
 hyprland(){
     write_header "Configuracion de ArchLinux UEFI btrfs https://wiki.archlinux.org/title/Btrfs"
     print_info "Instalando escritorio Hyprland https://wiki.archlinux.org/title/Hyprland"
-    sudo pacman --noconfirm -S hyprland
+    sudo pacman --noconfirm --needed -S hyprland waywar hyprpaper xdg-desktop-portal-hyprland wayland wlroots xorg-xwayland polkit-kde-agent mako grim slurp wofi kitty dolphin firefox neofetch 
 }
 
 sddm(){
