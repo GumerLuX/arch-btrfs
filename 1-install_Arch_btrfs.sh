@@ -66,5 +66,5 @@ cp -r /root/arch-btrfs /mnt/root
 
 write_header "Instalacion de ArchLinux UEFI btrfs https://wiki.archlinux.org/title/Btrfs"
 print_info "Chroot"
-arch-chroot /mnt /root/arch-btrfs/2-install_config.sh
+arch-chroot /mnt ./root/arch-btrfs/2-install_config.sh
 

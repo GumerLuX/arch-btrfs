@@ -31,7 +31,7 @@ esac
 plasma(){
     write_header "Configuracion de ArchLinux UEFI btrfs https://wiki.archlinux.org/title/Btrfs"
     print_info "Instalando escritorio KDE-Plasma https://wiki.archlinux.org/title/KDE#Plasma"
-    sudo pacman --noconfirm -S plasma-pa plasma-nm plasma-systemmonitor kscreen khotkeys powerdevil kdeplasma-addons kde-gtk-config breeze-gtk alacritty dolphin kate mpv ark iwd konsole plasma-meta plasma-workspace smartmontools vim wget wiriless_tools
+    sudo pacman --noconfirm -S plasma-pa plasma-nm plasma-systemmonitor kscreen khotkeys powerdevil kdeplasma-addons kde-gtk-config breeze-gtk alacritty dolphin kate mpv ark iwd konsole plasma-meta plasma-workspace smartmontools vim wget wiriless_tools plymouth gwenview
 }
 
 hyprland(){

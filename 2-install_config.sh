@@ -71,9 +71,10 @@ passwd root
 #Creando usuario
 write_header "Configuracion de ArchLinux UEFI btrfs https://wiki.archlinux.org/title/Btrfs"
 print_info "Creando usuario $username"
-useradd -m -g users -G wheel -s /bin/bash $username
-echo "Set password for $username"
+echo "Add user $username"
+useradd -m -G wheel $username
 passwd $username
+
 
 #Habilitando servicios
 write_header "Configuracion de ArchLinux UEFI btrfs https://wiki.archlinux.org/title/Btrfs"
