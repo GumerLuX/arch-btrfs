@@ -36,7 +36,7 @@ mkfs.btrfs -f /dev/$root
 
 write_header "Instalacion de ArchLinux UEFI btrfs https://wiki.archlinux.org/title/Btrfs"
 print_info "Montando particiones"
-mount /dev/$sda2 /mnt
+mount /dev/$root /mnt
 btrfs su cr /mnt/@
 btrfs su cr /mnt/@cache
 btrfs su cr /mnt/@home
@@ -44,12 +44,12 @@ btrfs su cr /mnt/@snapshots
 btrfs su cr /mnt/@log
 umount /mnt
 
-mount -o compress=zstd:1,noatime,subvol=@ /dev/$sda2 /mnt
+mount -o compress=zstd:1,noatime,subvol=@ /dev/$root /mnt
 mkdir -p /mnt/{boot/efi,home,.snapshots,var/{cache,log}}
-mount -o compress=zstd:1,noatime,subvol=@cache /dev/$sda2 /mnt/var/cache
-mount -o compress=zstd:1,noatime,subvol=@home /dev/$sda2 /mnt/home
-mount -o compress=zstd:1,noatime,subvol=@log /dev/$sda2 /mnt/var/log
-mount -o compress=zstd:1,noatime,subvol=@snapshots /dev/$sda2 /mnt/.snapshots
+mount -o compress=zstd:1,noatime,subvol=@cache /dev/$root /mnt/var/cache
+mount -o compress=zstd:1,noatime,subvol=@home /dev/$root /mnt/home
+mount -o compress=zstd:1,noatime,subvol=@log /dev/$root /mnt/var/log
+mount -o compress=zstd:1,noatime,subvol=@snapshots /dev/$root /mnt/.snapshots
 
 write_header "Instalacion de ArchLinux UEFI btrfs https://wiki.archlinux.org/title/Btrfs"
 print_info "Instalando paquetes basicos"

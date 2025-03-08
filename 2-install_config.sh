@@ -27,6 +27,7 @@ hwclock --systohc
 #Actualizando reflector
 write_header "Configuracion de ArchLinux UEFI btrfs https://wiki.archlinux.org/title/Btrfs"
 print_info "Actualizando reflector"
+cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
 echo "Start reflector..."
 reflector -c "Germany,France,Spain" -p https -a 5 --sort rate --save /etc/pacman.d/mirrorlist
 pacman -Syy
@@ -79,24 +80,28 @@ write_header "Configuracion de ArchLinux UEFI btrfs https://wiki.archlinux.org/t
 print_info "Habilitando servicios"
 systemctl enable NetworkManager
 systemctl enable bluetooth
-systemctl enable cups
-systemctl enable avahi-daemon
+systemctl enable cups.service
 systemctl enable sshd
+systemctl enable avahi-daemon
 systemctl enable reflector.timer
+systemctl enable fstrim.timer
+systemctl enable firewalld
+systemctl enable acpid
+
 
 #Grub instalacion
 write_header "Configuracion de ArchLinux UEFI btrfs https://wiki.archlinux.org/title/Btrfs" 
 print_info "Instalando grub"
-grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-grub-mkconfig -o /boot/grub/grub.cfg   
-
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB --removable
+grub-mkconfig -o /boot/grub/grub.cfg
+ 
 # Agregemos btrfs y setfont a mkinitcpio.conf
 # Before: BINARIES=()
 # After:  BINARIES=(btrfs setfont)
 write_header "Configuracion de ArchLinux UEFI btrfs https://wiki.archlinux.org/title/Btrfs"
 print_info "Agregando btrfs y setfont a mkinitcpio.conf"
-sed -i 's/^HOOKS.*/HOOKS=(base udev autodetect keyboard keymap consolefont modconf block encrypt btrfs filesystems fsck)/' /etc/mkinitcpio.conf
-sed -i 's/^MODULES.*/MODULES=(btrfs)/' /etc/mkinitcpio.conf
+sed -i 's/BINARIES=()/BINARIES=(btrfs setfont)/g' /etc/mkinitcpio.conf
+mkinitcpio -p linux
 
 # Agregamos usuario a el grupo 'wheel'
 write_header "Configuracion de ArchLinux UEFI btrfs https://wiki.archlinux.org/title/Btrfs"
