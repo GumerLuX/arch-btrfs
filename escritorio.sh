@@ -1,19 +1,51 @@
 #!/bin/bash
-#Version:0.1 
-#Scrip de instalacion d ArchLinux UEFI btrfs
+# Version: 0.1 
+# Script de instalación de ArchLinux UEFI Btrfs
 
-#estilos
+# Estilos
 if [[ -f $(pwd)/estilos ]]; then
-	source estilos
+    source estilos
 else
-	echo "missing file: estilos"
-	exit 1
+    echo "Missing file: estilos"
+    exit 1
 fi
 
-write_header "Configuracion de ArchLinux UEFI btrfs https://wiki.archlinux.org/title/Btrfs"
-print_info "Eliguiendo el escritorio de trabajo https://wiki.archlinux.org/title/Desktop_environment
+# Función para instalar KDE Plasma
+plasma(){
+    write_header "Configuración de ArchLinux UEFI Btrfs https://wiki.archlinux.org/title/Btrfs"
+    print_info "Instalando escritorio KDE-Plasma https://wiki.archlinux.org/title/KDE#Plasma"
+    sudo pacman --noconfirm --needed -S plasma-pa plasma-nm plasma-systemmonitor kscreen khotkeys powerdevil kdeplasma-addons kde-gtk-config breeze-gtk alacritty dolphin kate mpv ark iwd konsole plasma-meta plasma-workspace smartmontools vim wget wireless_tools plymouth gwenview
+}
+
+# Función para instalar Hyprland
+hyprland(){
+    write_header "Configuración de ArchLinux UEFI Btrfs https://wiki.archlinux.org/title/Btrfs"
+    print_info "Instalando escritorio Hyprland https://wiki.archlinux.org/title/Hyprland"
+    sudo pacman --noconfirm --needed -S hyprland waybar hyprpaper xdg-desktop-portal-hyprland wayland wlroots xorg-xwayland polkit-kde-agent mako grim slurp wofi kitty dolphin firefox neofetch 
+}
+
+# Función para instalar SDDM
+sddm(){
+    write_header "Configuración de ArchLinux UEFI Btrfs https://wiki.archlinux.org/title/Btrfs"
+    print_info "Instalando gestor de pantalla SDDM https://wiki.archlinux.org/title/SDDM"
+    sudo pacman --noconfirm -S sddm
+    # Personalizar SDDM (Opcional)
+    yay -S sddm-sugar-candy-git
+    sudo bash -c 'cat > /etc/sddm.conf <<EOF
+[Theme]
+Current=sugar-candy
+EOF'
+
+    # Habilitar SDDM
+    sudo systemctl enable sddm
+    sudo systemctl start sddm
+}
+
+# Mensaje y elección del escritorio
+write_header "Configuración de ArchLinux UEFI Btrfs https://wiki.archlinux.org/title/Btrfs"
+print_info "Eligiendo el escritorio de trabajo https://wiki.archlinux.org/title/Desktop_environment
 KDE-Plasma o Hyprland"
-read -p "Que escritorio deseas instalar (ej: plasma): " escritorio
+read -p "¿Qué escritorio deseas instalar? (ej: plasma): " escritorio
 
 case $escritorio in
     plasma)
@@ -27,32 +59,3 @@ case $escritorio in
         exit 1
         ;;
 esac
-
-plasma(){
-    write_header "Configuracion de ArchLinux UEFI btrfs https://wiki.archlinux.org/title/Btrfs"
-    print_info "Instalando escritorio KDE-Plasma https://wiki.archlinux.org/title/KDE#Plasma"
-    sudo pacman --noconfirm --needed -S plasma-pa plasma-nm plasma-systemmonitor kscreen khotkeys powerdevil kdeplasma-addons kde-gtk-config breeze-gtk alacritty dolphin kate mpv ark iwd konsole plasma-meta plasma-workspace smartmontools vim wget wiriless_tools plymouth gwenview
-}
-
-hyprland(){
-    write_header "Configuracion de ArchLinux UEFI btrfs https://wiki.archlinux.org/title/Btrfs"
-    print_info "Instalando escritorio Hyprland https://wiki.archlinux.org/title/Hyprland"
-    sudo pacman --noconfirm --needed -S hyprland waywar hyprpaper xdg-desktop-portal-hyprland wayland wlroots xorg-xwayland polkit-kde-agent mako grim slurp wofi kitty dolphin firefox neofetch 
-}
-
-sddm(){
-    write_header "Configuracion de ArchLinux UEFI btrfs https://wiki.archlinux.org/title/Btrfs"
-    print_info "Instalando gestor de pantalla sddm https://wiki.archlinux.org/title/SDDM"
-    pacman --noconfirm -S sddm
-    # Personalizar SDDM (Opcional)
-    yay -S sddm-sugar-candy-git
-    sudo bash -c 'cat >> /etc/sddm.conf <<EOF
-    [Theme]
-    Current=sugar-candy
-    EOF'
-
-    # Habilitar SDDM
-    sudo systemctl enable sddm
-    sudo systemctl start sddm
-
-
