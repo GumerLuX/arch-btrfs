@@ -14,14 +14,14 @@ fi
 plasma(){
     write_header "Configuración de ArchLinux UEFI Btrfs https://wiki.archlinux.org/title/Btrfs"
     print_info "Instalando escritorio KDE-Plasma https://wiki.archlinux.org/title/KDE#Plasma"
-    sudo pacman --noconfirm --needed -S plasma-pa plasma-nm plasma-systemmonitor kscreen powerdevil kdeplasma-addons kde-gtk-config breeze-gtk alacritty dolphin kate mpv ark iwd konsole plasma-meta plasma-workspace smartmontools vim wget wireless_tools plymouth gwenview
+    sudo pacman --noconfirm --needed -S plasma-meta plasma-pa plasma-nm plasma-systemmonitor kscreen powerdevil kdeplasma-addons kde-gtk-config breeze-gtk alacritty dolphin kate mpv ark iwd konsole plasma-workspace smartmontools vim wget wireless_tools plymouth gwenview nano
 }
 
 # Función para instalar Hyprland
 hyprland(){
     write_header "Configuración de ArchLinux UEFI Btrfs https://wiki.archlinux.org/title/Btrfs"
     print_info "Instalando escritorio Hyprland https://wiki.archlinux.org/title/Hyprland"
-    sudo pacman --noconfirm --needed -S hyprland waybar hyprpaper xdg-desktop-portal-hyprland wayland wlroots xorg-xwayland polkit-kde-agent mako grim slurp wofi kitty dolphin firefox neofetch 
+    sudo pacman --noconfirm --needed -S hyprland waybar hyprpaper xdg-desktop-portal-hyprland wayland wlroots xorg-xwayland polkit-kde-agent mako grim slurp wofi kitty dolphin firefox neofetch dolphin dunst qt5-wayland qt6-wayland nano
 }
 
 # Función para instalar SDDM
@@ -45,21 +45,21 @@ EOF'
 write_header "Configuración de ArchLinux UEFI Btrfs https://wiki.archlinux.org/title/Btrfs"
 print_info "Eligiendo el escritorio de trabajo https://wiki.archlinux.org/title/Desktop_environment
 KDE-Plasma o Hyprland"
-read -p "¿Qué escritorio deseas instalar? (ej: plasma): " escritorio
-
-case $escritorio in
-    plasma)
-        plasma
-        ;;
-    hyprland)
-        hyprland
-        ;;
-    *)
-        echo "Escritorio no reconocido. Por favor elige 'plasma' o 'hyprland'."
-        exit 1
-        ;;
-esac
+  
+echo -e "   1.Escritorio${Yellow} Kde Plasma ${fin}"
+echo -e "   2.Escritorio${Yellow} Hyprland ${fin}"
+  echo
+  echo    "   b) Atras"
+  echo
+  read -p "Introduzca opcion:" op
+    if [ "$op" ]; then
+        case $op in
+            1) plasma ;;
+            2) hyprland ;;
+            b) exit 1 ;;
+            *) echo "Opcion no valida" ;;
+        esac
+    fi
 
 # Instalando el gestor de pantalla SDDM
 sddm
-

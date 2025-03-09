@@ -53,7 +53,7 @@ mount -o compress=zstd:1,noatime,subvol=@snapshots /dev/$root /mnt/.snapshots
 
 write_header "Instalacion de ArchLinux UEFI btrfs https://wiki.archlinux.org/title/Btrfs"
 print_info "Instalando paquetes basicos"
-pacstrap -K /mnt base base-devel linux linux-firmware git btrfs-progs grub efibootmgr grub-btrfs inotify-tools timeshift vim networkmanager pipewire pipewire-alsa pipewire-pulse pipewire-jack reflector zsh zsh-completions zsh-autosuggestions openssh man sudo
+pacstrap -K /mnt base base-devel linux linux-firmware git btrfs-progs grub efibootmgr grub-btrfs inotify-tools timeshift vim nano networkmanager pipewire pipewire-alsa pipewire-pulse pipewire-jack reflector zsh zsh-completions zsh-autosuggestions openssh man sudo
 
 write_header "Instalacion de ArchLinux UEFI btrfs https://wiki.archlinux.org/title/Btrfs"
 print_info "Generando el fstab"
@@ -62,7 +62,7 @@ cat /mnt/etc/fstab
 
 write_header "Instalacion de ArchLinux UEFI btrfs https://wiki.archlinux.org/title/Btrfs"
 print_info "Configurando chroot"
-cp -r /root/arch-btrfs /mnt/root
+cp -r $(pwd)  /mnt/root
 
 write_header "Instalacion de ArchLinux UEFI btrfs https://wiki.archlinux.org/title/Btrfs"
 print_info "Chroot"

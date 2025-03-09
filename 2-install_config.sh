@@ -12,8 +12,10 @@ fi
 
 #Estableciendo variables configuracion
 write_header "Configuracion de ArchLinux UEFI btrfs https://wiki.archlinux.org/title/Btrfs"
+print_info "Este script se ha de realizar con el usuario root"
 print_info "Estableciendo variables de configuracion"
 read -p "Tu teclado es ej:(es):" keymap
+read -p "Tu teclado es ej:(es):" LOCALE
 read -p "Tu zonainfo es: ej:(Europe/Madrid):" zonainfo
 read -p "Tu hostname es: ej:(archlinux):" hostname
 read -p "Tu nombre de usuario es: ej:(usuario):" username
@@ -43,6 +45,7 @@ pacman --noconfirm -S xdg-desktop-portal-wlr network-manager-applet dialog wpa_s
 #Estableciendo idioma
 write_header "Configuracion de ArchLinux UEFI btrfs https://wiki.archlinux.org/title/Btrfs"
 print_info "Estableciendo idioma utf8 $keymap"
+sed -i "/"$LOCALE".UTF/s/^#//g" /etc/locale.gen
 echo "es_ES.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
 echo "LANG=es_ES.UTF-8" >> /etc/locale.conf
@@ -50,7 +53,7 @@ echo "LANG=es_ES.UTF-8" >> /etc/locale.conf
 #Estableciendo teclado
 write_header "Configuracion de ArchLinux UEFI btrfs https://wiki.archlinux.org/title/Btrfs"
 print_info "Estableciendo teclado $keymap"
-echo "FONT=ter-v18b" >> /etc/vconsole.conf
+echo "FONT=ter-v18n" >> /etc/vconsole.conf
 echo "KEYMAP=$keymap" >> /etc/vconsole.conf
 
 #Estableciendo hostname y localhost
@@ -75,6 +78,33 @@ echo "Add user $username"
 useradd -m -G wheel $username
 passwd $username
 
+# Configuracion de Pacman, color y ponemos el comococos en la barra
+write_header "5.A - CONFIGURACION DE PACMAN - https://gumerlux.github.io/Blog.GumerLuX/"
+print_info " Tenemos que modificar, el archivo ${Gray}/etc/pacman.conf${fin}"
+print_info " Descomentamos el hastag de la linea #Color del archivo ${Gray}/etc/pacman.conf{fin}  
+  Añadimos al final del grupo color ${Gray}ILoveCandy${fin}, las letras 'ILC' sonmayusculas.
+  Desmarcamos las casillas de:
+      [multilib]
+      include /ete/pacman.d/mirrorlist"
+pause_function
+cp -vf /etc/pacman.conf /etc/pacman.conf.olg
+sed -i "/Color/s/^#//g" /etc/pacman.conf
+sed -i "/[multilib]/s/^#//g" /etc/pacman.conf
+sed -i "37i ILoveCandy" /etc/pacman.conf
+sed -i 's/ParallelDownloads = 5/ParallelDownloads = 10/' /etc/pacman.conf
+sed -i '/^\s*#\[multilib\]/s/^#//' /etc/pacman.conf
+sed -i '/^\s*#Include = \/etc\/pacman.d\/mirrorlist/s/^#//' /etc/pacman.conf
+print_info "Comprobando el archivo pacman.conf"
+nano /etc/pacman.conf
+pacman -Sy
+
+# Dar color a nano
+write_header "4.B - PONEMOS COLOR A NANO - https://gumerlux.github.io/Blog.GumerLuX/"
+print_info "  Configuramos 'nano' tanto para nuestro usuario como para root"
+pause_function
+sed -i '/*.nanorc/s/^#//g' /etc/nanorc
+sed -i '/set linenumbers/s/^#//g' /etc/nanorc
+
 
 #Habilitando servicios
 write_header "Configuracion de ArchLinux UEFI btrfs https://wiki.archlinux.org/title/Btrfs"
@@ -88,7 +118,7 @@ systemctl enable reflector.timer
 systemctl enable fstrim.timer
 systemctl enable firewalld
 systemctl enable acpid
-
+systemctl --user enable pipewire pipewire-pulse wireplumber
 
 #Grub instalacion
 write_header "Configuracion de ArchLinux UEFI btrfs https://wiki.archlinux.org/title/Btrfs" 
@@ -108,19 +138,14 @@ mkinitcpio -p linux
 write_header "Configuracion de ArchLinux UEFI btrfs https://wiki.archlinux.org/title/Btrfs"
 print_info "Agregando usuario a el grupo 'wheel'"
 echo Defaults  env_reset,pwfeedback >> /etc/sudoers
-echo "Uncomment %wheel group in sudoers (around line 85):"
-echo "Before: #%wheel ALL=(ALL:ALL) ALL"
-echo "After:  %wheel ALL=(ALL:ALL) ALL"
-echo ""
-read -p "Open sudoers now?" c
-EDITOR=vim sudo -E visudo
+sed -i '/%wheel ALL=(ALL:ALL) ALL/s/^#//' /etc/sudoers
 usermod -aG wheel $username
 
 # Copiamos el scripts de instalacion al directorio home 
 cp -r $(pwd) /home/$username
 chown -R $username:users /home/$username
 
-write_header "Configuracion de ArchLinux UEFI btrfs https://wiki.archlinux.org/title/Btrfs"
+sed -i 's/^#%wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' /etc/sudoers
 print_info "Configuracion finalizada"
 echo "     _                   "
 echo "  __| | ___  _ __   ___  "

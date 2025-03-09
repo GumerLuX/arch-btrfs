@@ -10,6 +10,11 @@ else
 	exit 1
 fi
 
+#Instalamos servidor grafico, XORG Y MESA
+write_header "Configuración de la tarjeta gráfica"
+print_info "Instalando servidor gráfico Xorg y Mesa..."
+pacman -S xorg xorg-xinit mesa mesa-demos xorg-server xorg-utils xorg-server-utils --noconfirm
+
 # Detectar la GPU
 write_header "Configuración de la tarjeta gráfica"
 print_info "Detectando la tarjeta gráfica..."
@@ -21,13 +26,13 @@ if echo "$GPU" | grep -qi "NVIDIA"; then
     DRIVER="nvidia nvidia-utils nvidia-settings"
     echo "Se detectó una GPU NVIDIA."
 elif echo "$GPU" | grep -qi "AMD"; then
-    DRIVER="mesa vulkan-radeon xf86-video-amdgpu"
+    DRIVER="vulkan-radeon xf86-video-amdgpu"
     echo "Se detectó una GPU AMD."
 elif echo "$GPU" | grep -qi "Intel"; then
-    DRIVER="mesa vulkan-intel xf86-video-intel"
+    DRIVER="intel-media-driver libva-intel-driver vulkan-intel --noconfirm"
     echo "Se detectó una GPU Intel."
 elif echo "$GPU" | grep -qi "VMware"; then
-    DRIVER="xf86-video-vmware mesa virtualbox-guest-utils"
+    DRIVER="xf86-video-vmware virtualbox-guest-utils"
 else
     echo "No se pudo detectar una GPU compatible. Saliendo..."
     exit 1
