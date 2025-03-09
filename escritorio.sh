@@ -14,7 +14,7 @@ fi
 plasma(){
     write_header "Configuración de ArchLinux UEFI Btrfs https://wiki.archlinux.org/title/Btrfs"
     print_info "Instalando escritorio KDE-Plasma https://wiki.archlinux.org/title/KDE#Plasma"
-    sudo pacman --noconfirm --needed -S plasma-pa plasma-nm plasma-systemmonitor kscreen khotkeys powerdevil kdeplasma-addons kde-gtk-config breeze-gtk alacritty dolphin kate mpv ark iwd konsole plasma-meta plasma-workspace smartmontools vim wget wireless_tools plymouth gwenview
+    sudo pacman --noconfirm --needed -S plasma-pa plasma-nm plasma-systemmonitor kscreen powerdevil kdeplasma-addons kde-gtk-config breeze-gtk alacritty dolphin kate mpv ark iwd konsole plasma-meta plasma-workspace smartmontools vim wget wireless_tools plymouth gwenview
 }
 
 # Función para instalar Hyprland
@@ -30,12 +30,12 @@ sddm(){
     print_info "Instalando gestor de pantalla SDDM https://wiki.archlinux.org/title/SDDM"
     sudo pacman --noconfirm -S sddm
     # Personalizar SDDM (Opcional)
-    yay -S sddm-sugar-candy-git
+    yay --noconfirm -S sddm-sugar-candy-git
     sudo bash -c 'cat > /etc/sddm.conf <<EOF
 [Theme]
 Current=sugar-candy
 EOF'
-
+    print_info "Escritorio instalado correctamente. Reinicia el sistema para aplicar los cambios."
     # Habilitar SDDM
     sudo systemctl enable sddm
     sudo systemctl start sddm
@@ -59,3 +59,7 @@ case $escritorio in
         exit 1
         ;;
 esac
+
+# Instalando el gestor de pantalla SDDM
+sddm
+
